@@ -52,9 +52,8 @@
     <ApplicationIcon>icon_blue_RYU_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoFormGenorator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Z:\Git Repos\AutoFormGenorator\AutoFormGenorator\bin\Release\AutoFormGenorator.dll</HintPath>
+    <Reference Include="AutoFormGenorator">
+      <HintPath>..\Dependencies\AutoFormGenorator.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
@@ -66,10 +65,10 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Origen.Core">
-      <HintPath>..\..\..\..\Downloads\Ozone.Satellite.Admin (1)\Ozone.Satellite.Admin\Origen.Core.dll</HintPath>
+      <HintPath>\Origen.Core.dll</HintPath>
     </Reference>
     <Reference Include="Origen.Satellite.Common">
-      <HintPath>..\..\..\..\Downloads\Ozone.Satellite.Admin (1)\Ozone.Satellite.Admin\Origen.Satellite.Common.dll</HintPath>
+      <HintPath>\Origen.Satellite.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
