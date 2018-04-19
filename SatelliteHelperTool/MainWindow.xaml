@@ -1,0 +1,123 @@
+﻿<Window x:Class="SatelliteHelperTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SatelliteHelperTool"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"    
+        Title="Satellite Telescope" Height="608.242" Width="1225.275" Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized" Icon="icon_blue_RYU_icon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="• File" x:Name="FileMenuItem">
+                    <MenuItem Header="Manage Satellite Connections" x:Name="ManageConnectionsMenuItem" Click="ManageConnectionsMenuItem_Click"/>
+                    <Separator />
+                    <MenuItem Header="Start" x:Name="TimerControlMenuItem" Click="TimerControlMenuItem_Click"/>
+                </MenuItem>
+                <MenuItem Header="• Active Connections">
+                    <MenuItem Header="Remove Connections">
+                        <MenuItem Header="Older than 1 Day" Tag="1" Click="ActiveConnectionRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 2 Days" Tag="2" Click="ActiveConnectionRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 3 Days" Tag="3" Click="ActiveConnectionRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 4 Days" Tag="4" Click="ActiveConnectionRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 5 Days" Tag="5" Click="ActiveConnectionRemoveOlderThan_Click"/>
+                        <MenuItem Header="Custom" x:Name="RemoveConnectionByCustomDayMenuItem" Click="RemoveConnectionByCustomDayMenuItem_Click"/>
+                        <Separator />
+                        <MenuItem Header="Remove By User ID" x:Name="RemoveConnectionByUserIDMenuItem" Click="RemoveConnectionByUserIDMenuItem_Click"/>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="• Client Connections">
+                    <MenuItem Header="Remove Clients">
+                        <MenuItem Header="Older than 1 Day" Tag="1" Click="ClientsRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 2 Days" Tag="2" Click="ClientsRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 3 Days" Tag="3" Click="ClientsRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 4 Days" Tag="4" Click="ClientsRemoveOlderThan_Click"/>
+                        <MenuItem Header="Older than 5 Days" Tag="5" Click="ClientsRemoveOlderThan_Click"/>
+                        <MenuItem Header="Custom" x:Name="RemoveClientByCustomDayMenuItem" Click="RemoveClientByCustomDayMenuItem_Click"/>
+                        <Separator />
+                        <MenuItem Header="Remove By User ID" x:Name="RemoveClientByUserIDMenuItem" Click="RemoveClientByUserIDMenuItem_Click"/>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="426*"/>
+                <RowDefinition Height="200*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Active Connections" Grid.Column="0" Grid.Row="0">
+                <ListView x:Name="ActiveConnectionsListView">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="User" Width="120" DisplayMemberBinding="{Binding RequestUserId}" />
+                            <GridViewColumn Header="Subroutne" Width="150" DisplayMemberBinding="{Binding RequestSubroutine}" />
+                            <GridViewColumn Header="Function" Width="150" DisplayMemberBinding="{Binding Subroutine}" />
+                            <GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding RequestStartedTime}" />
+                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding RequestStartedDate}" />
+                            <GridViewColumn Header="Days Old" Width="70" DisplayMemberBinding="{Binding DaysOld}" />
+                            <GridViewColumn Header="Account" Width="120" DisplayMemberBinding="{Binding Environment}" />
+                            <GridViewColumn Header="" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Remove" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" x:Name="RemoveConnectionButton" MouseDown="RemoveConnectionButton_MouseDown"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </GroupBox>
+
+            <GroupBox Header="Clients" Grid.Column="1" Grid.RowSpan="2">
+                <Grid>
+                    <ListView x:Name="ClientsListView">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Host IP" Width="120" DisplayMemberBinding="{Binding HostIP}" />
+                                <GridViewColumn Header="Host Name" Width="150" DisplayMemberBinding="{Binding HostName}" />
+                                <GridViewColumn Header="User" Width="130" DisplayMemberBinding="{Binding UserId}" />
+                                <GridViewColumn Header="Time" Width="100" DisplayMemberBinding="{Binding StartTime}" />
+                                <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding StartDate}" />
+                                <GridViewColumn Header="Days Old" Width="70" DisplayMemberBinding="{Binding DaysOld}" />
+                                <GridViewColumn Header="Account" Width="120" DisplayMemberBinding="{Binding Environment}" />
+                                <GridViewColumn Header="" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="Remove" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" MouseDown="TextBlock_MouseDown"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Locks" Grid.Column="0" Grid.Row="2">
+                <Grid>
+                    <ListView x:Name="LocksistView">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="User" Width="120" DisplayMemberBinding="{Binding User}" />
+                                <GridViewColumn Header="Lock ID" Width="300" DisplayMemberBinding="{Binding LockID}" />
+                                <GridViewColumn Header="Account" Width="120" DisplayMemberBinding="{Binding Environment}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
