@@ -9,7 +9,7 @@ namespace SatelliteHelperTool.Core
 {
     public class DataLogic
     {
-
+        //Connect to the Satellites
         public void Connect(List<Objects.SatelliteConnection> SatelliteConnection)
         {
             SatelliteConnection.ForEach(Connection =>
@@ -18,6 +18,7 @@ namespace SatelliteHelperTool.Core
             });
         }
 
+        //Disconnect from the Satellites
         public void Disconnect(List<Objects.SatelliteConnection> SatelliteConnection)
         {
             SatelliteConnection.ForEach(Connection =>
@@ -26,6 +27,7 @@ namespace SatelliteHelperTool.Core
             });
         }
 
+        //Get the Active Connections for all Satellites
         public List<Objects.ActiveConnection> GetActiveConnections(List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             List<Objects.ActiveConnection> ActiveConnections = new List<Objects.ActiveConnection>();
@@ -34,24 +36,29 @@ namespace SatelliteHelperTool.Core
             {
                 try
                 {
+                    //Get the name of the Environment where the connetion is
                     string Environment = ConnectionDetails.GetSatelliteManager().Environment;
 
                     SatelliteConnection[] connList = ConnectionDetails.GetSatelliteManager().ConnectionList;
                     if (connList != null)
                     {
+                        //Go over all the connections
                         foreach (SatelliteConnection conn2 in connList)
                         {
+                            //If the connection has been marked as kill, continue
                             if (conn2.ConnectionState == SatelliteConnectionState.Kill)
                             {
                                 continue;
                             }
 
+                            //See if there was any subroutine aka function that the user was doing 
                             string subroutine = string.Empty;
                             if (conn2.Request.Data.ContainsKey("subroutine"))
                             {
                                 subroutine = conn2.Request.Data["subroutine"].ToString();
                             }
 
+                            //Remap to my new object
                             Objects.ActiveConnection ActiveConnection = new Objects.ActiveConnection()
                             {
                                 ConnectionId = conn2.ConnectionId,
@@ -83,6 +90,7 @@ namespace SatelliteHelperTool.Core
             return ActiveConnections;
         }
 
+        //Get the Clients for all Satellites
         public List<Core.Objects.Client> GetClients(List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             List<Core.Objects.Client> Clients = new List<Objects.Client>();
@@ -90,11 +98,13 @@ namespace SatelliteHelperTool.Core
             {
                 try
                 {
+                    //Get the name of the Environment where the connetion is
                     string Environment = ConnectionDetails.GetSatelliteManager().Environment;
 
                     SatelliteClient[] SC = ConnectionDetails.GetSatelliteManager().ClientList;
                     foreach (SatelliteClient Client in SC)
                     {
+                        //Remap to my new object
                         Clients.Add(new Core.Objects.Client
                         {
                             HostIP = Client.HostIP,
@@ -117,6 +127,7 @@ namespace SatelliteHelperTool.Core
             return Clients;
         }
 
+        //Get the locks for all Satellites 
         public List<Objects.SystemLock> GetLocks(List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             List<Objects.SystemLock> SystemLocks = new List<Objects.SystemLock>();
@@ -125,11 +136,13 @@ namespace SatelliteHelperTool.Core
             {
                 try
                 {
+                    //Get the name of the Environment where the connetion is
                     string Environment = ConnectionDetails.GetSatelliteManager().Environment;
 
                     List<LockObject> lockObjects = ConnectionDetails.GetSatelliteManager().GetCurrentLocks();
                     foreach(LockObject Lock in lockObjects)
                     {
+                        //Remap to my new object
                         SystemLocks.Add(new Objects.SystemLock()
                         {
                             User = Lock.User,
@@ -150,16 +163,19 @@ namespace SatelliteHelperTool.Core
             return SystemLocks;
         }       
 
+        //Remove a Client from it's parrent Satellite
         public void RemoveClient(Core.Objects.Client Client)
         {
             Client.SatelliteConnection.GetSatelliteManager().RemoveClient(Client.SesstionID);
         }
 
+        //Remove a Connection from it's parrent Satellite
         public void RemoveConnection(Core.Objects.ActiveConnection ActiveConnection)
         {
             ActiveConnection.SatelliteConnection.GetSatelliteManager().RemoveClient(ActiveConnection.RequestSessionId);
         }
 
+        //Remove all clients that are older than days given accross all Satellites
         public void RemoveClientsOlderThan(int Days, List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             GetClients(SatelliteConnectionDetails).Where(Client => Client.DaysOld > Days).ToList().ForEach(Client =>
@@ -168,6 +184,7 @@ namespace SatelliteHelperTool.Core
             });
         }
 
+        //Remove all clients where the user is the one given accross all Satellites
         public void RemoveClientsByUserID(string UserID, List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             GetClients(SatelliteConnectionDetails).Where(Client => Client.UserId == UserID).ToList().ForEach(Client =>
@@ -176,6 +193,7 @@ namespace SatelliteHelperTool.Core
             });
         }
 
+        //Remove all connections that are older than days given accross all Satellites
         public void RemoveConnectionsOldetThan(int Days, List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             GetActiveConnections(SatelliteConnectionDetails).Where(Connection => Connection.DaysOld > Days).ToList().ForEach(Connection =>
@@ -184,6 +202,7 @@ namespace SatelliteHelperTool.Core
             });
         }
 
+        //Remove all connections where the user is the one given accross all Satellites
         public void RemoveConnectionByUserID(string UserID, List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
             GetActiveConnections(SatelliteConnectionDetails).Where(Connection => Connection.ConnectionUser == UserID).ToList().ForEach(Connection =>

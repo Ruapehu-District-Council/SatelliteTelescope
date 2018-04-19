@@ -21,6 +21,7 @@ namespace SatelliteHelperTool.Core.Objects
         {
             get
             {
+                //Workout the days since the record was created.
                 int Age = (int)Math.Round((DateTime.Today - DateTime).TotalDays);
                 return Age > -1 ? Age : 0;
             }

@@ -95,7 +95,7 @@
                                 <GridViewColumn Header="" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="Remove" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" MouseDown="TextBlock_MouseDown"/>
+                                            <TextBlock Text="Remove" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" x:Name="RemoveClientButton" MouseDown="RemoveClientButton_MouseDown"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

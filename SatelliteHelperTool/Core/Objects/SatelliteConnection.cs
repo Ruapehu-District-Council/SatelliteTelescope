@@ -23,16 +23,21 @@ namespace SatelliteHelperTool.Core.Objects
 
         public bool Connected { get; set; }
 
+        //Connect to the Satellite
         public void Connect()
         {
             try
             {
+                //Get a new Session ID for the connection
                 SessionID = SatelliteUtil.NewSessionId();
+                //Get the username for the current user to pass to Satellite
                 string UserID = Environment.UserName;
 
+                //Get the Sattelite object, i think this is WCF stuff
                 satelliteManager = (ISatelliteManager)Activator.GetObject(typeof(ISatelliteManager), SaterliteURL);
 
-                SatelliteUtil.RegisterSatellite(satelliteManager, SessionID, UserID, "HelperTool", Port.ToString(), Environment.MachineName);
+                //Register on the Satellite service
+                SatelliteUtil.RegisterSatellite(satelliteManager, SessionID, UserID, "Satellite.Telescope", Port.ToString(), Environment.MachineName);
                 Connected = true;
             }
             catch
@@ -50,7 +55,9 @@ namespace SatelliteHelperTool.Core.Objects
         {
             if (SessionID != null)
             {
+                //Remove the connction for the Satellite.
                 satelliteManager.RemoveClient(SessionID);
+                Connected = false;
             }
         }
 

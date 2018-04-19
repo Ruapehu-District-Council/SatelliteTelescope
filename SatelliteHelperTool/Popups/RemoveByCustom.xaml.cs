@@ -32,6 +32,7 @@ namespace SatelliteHelperTool.Popups
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            //Validate the input to make sure it's a day
             if (Viladate())
             {
                 DialogResult = false;
@@ -41,6 +42,7 @@ namespace SatelliteHelperTool.Popups
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            //This is so you can click the headder and drag it round
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
         }
