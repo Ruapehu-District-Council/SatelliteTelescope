@@ -42,6 +42,9 @@ namespace SatelliteHelperTool
             //If there is more than the default number of arguments, Handle them
             if (args.Length > 1)
             {
+                //Set running as CLI to stop popups.
+                DataLogic.RunningAsCLI = true;
+
                 //Connect to the Satellites
                 ConnectToSatellites();
 
@@ -59,8 +62,13 @@ namespace SatelliteHelperTool
                             //See if it is a number
                             if (Regex.IsMatch(CommandValue, @"^\d$"))
                             {
-                                //Find and remove the clients
-                                DataLogic.RemoveClientsOlderThan(int.Parse(CommandValue), SatelliteConnections);
+                                int Days = int.Parse(CommandValue);
+
+                                if (Days > 0)
+                                {
+                                    //Find and remove the clients
+                                    DataLogic.RemoveClientsOlderThan(Days, SatelliteConnections);
+                                }
                             }
                             break;
                         case "-removeconnectionsolderthan":
@@ -70,8 +78,13 @@ namespace SatelliteHelperTool
                             //See if it is a number
                             if (Regex.IsMatch(CommandValue, @"^\d$"))
                             {
-                                //Find and remove the connection
-                                DataLogic.RemoveConnectionsOldetThan(int.Parse(CommandValue), SatelliteConnections);
+                                int Days = int.Parse(CommandValue);
+
+                                if (Days > 0)
+                                {
+                                    //Find and remove the connection
+                                    DataLogic.RemoveConnectionsOldetThan(Days, SatelliteConnections);
+                                }
                             }
                             break;
                     }
@@ -219,7 +232,7 @@ namespace SatelliteHelperTool
                 if (messageBoxResult == MessageBoxResult.Yes)
                 {
                     //Remove the client
-                    DataLogic.RemoveClient(Client);
+                    DataLogic.RemoveClient(Client, SatelliteConnections);
                 }
             }
         }

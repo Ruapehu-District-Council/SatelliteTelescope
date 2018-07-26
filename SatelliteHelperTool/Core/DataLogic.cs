@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SatelliteHelperTool.Core
 {
     public class DataLogic
     {
+        public bool RunningAsCLI { get; set; } = false;
+
         //Connect to the Satellites
         public void Connect(List<Objects.SatelliteConnection> SatelliteConnection)
         {
@@ -164,9 +167,22 @@ namespace SatelliteHelperTool.Core
         }       
 
         //Remove a Client from it's parrent Satellite
-        public void RemoveClient(Core.Objects.Client Client)
+        public void RemoveClient(Core.Objects.Client Client, List<Objects.SatelliteConnection> SatelliteConnectionDetails)
         {
-            Client.SatelliteConnection.GetSatelliteManager().RemoveClient(Client.SesstionID);
+            Objects.ActiveConnection activeConnection = GetActiveConnections(SatelliteConnectionDetails).First(Connection => Connection.RequestSessionId == Client.SesstionID);
+            //Look to makesure there isn't a Connection for that Client. If there is don't remove the client.
+            if (activeConnection == null)
+            {
+                Client.SatelliteConnection.GetSatelliteManager().RemoveClient(Client.SesstionID);
+            }
+            else
+            {
+                //Only display message if not running with CLI arguments
+                if (!RunningAsCLI)
+                {
+                    MessageBox.Show("Unable to remove Client: " + Client.HostName + " as they have a Connection still processing: " + activeConnection.RequestSubroutine + " " + activeConnection.Subroutine);
+                }
+            }
         }
 
         //Remove a Connection from it's parrent Satellite
@@ -180,7 +196,7 @@ namespace SatelliteHelperTool.Core
         {
             GetClients(SatelliteConnectionDetails).Where(Client => Client.DaysOld > Days).ToList().ForEach(Client =>
             {
-                RemoveClient(Client);
+                RemoveClient(Client, SatelliteConnectionDetails);
             });
         }
 
@@ -189,7 +205,7 @@ namespace SatelliteHelperTool.Core
         {
             GetClients(SatelliteConnectionDetails).Where(Client => Client.UserId == UserID).ToList().ForEach(Client =>
             {
-                RemoveClient(Client);
+                RemoveClient(Client, SatelliteConnectionDetails);
             });
         }
 
