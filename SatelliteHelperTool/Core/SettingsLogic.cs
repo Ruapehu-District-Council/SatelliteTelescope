@@ -1,11 +1,11 @@
-﻿using AutoFormGenorator.Object;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoFormGenerator.Object;
 
 namespace SatelliteHelperTool.Core
 {
@@ -18,11 +18,11 @@ namespace SatelliteHelperTool.Core
         private JObject RootJnode;
 
         //Setup the AFG display
-        private AutoFormGenorator.Logic AFG;
+        private AutoFormGenerator.Logic AFG;
 
         public SettingsLogic()
         {
-            AFG = new AutoFormGenorator.Logic();
+            AFG = new AutoFormGenerator.Logic();
         }
 
         //Load the SatelliteConnections from the settings file
@@ -79,7 +79,7 @@ namespace SatelliteHelperTool.Core
         }
 
         //Get the AFG display for the Manage Satellite connections
-        public AutoFormGenorator.UserControls.FormControl GetAFGControl(List<Core.Objects.SatelliteConnection> SatelliteConnections)
+        public AutoFormGenerator.UserControls.FormControl GetAFGControl(List<Core.Objects.SatelliteConnection> SatelliteConnections)
         {
             //Use the shell class as the base for AFG to display
             //Just AFG stuff it can be ignorged...

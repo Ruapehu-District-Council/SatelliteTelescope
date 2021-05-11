@@ -43,6 +43,7 @@ namespace SatelliteHelperTool.Core
                     string Environment = ConnectionDetails.GetSatelliteManager().Environment;
 
                     SatelliteConnection[] connList = ConnectionDetails.GetSatelliteManager().ConnectionList;
+
                     if (connList != null)
                     {
                         //Go over all the connections
